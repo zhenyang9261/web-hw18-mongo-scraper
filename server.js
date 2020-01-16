@@ -1,10 +1,9 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var axios = require("axios");
-var cheerio = require("cheerio");
 
 var PORT = process.env.PORT || 8080;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/ngscraperdb";
 
 var app = express();
 
@@ -21,10 +20,18 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+// Use morgan logger for logging requests
+app.use(logger("dev"));
+
 // Import routes and give the server access to them.
-//var routes = require("./controllers/burgers_controller.js");
+//var routes = require("./controllers/controller.js");
 
 //app.use(routes);
+
+// Connect to the Mongo DB
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true
+});
 
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function() {
