@@ -2,7 +2,7 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/ngscraperdb";
 
 var app = express();
@@ -24,9 +24,9 @@ app.set("view engine", "handlebars");
 app.use(logger("dev"));
 
 // Import routes and give the server access to them.
-//var routes = require("./controllers/controller.js");
+var routes = require("./routes/scrapeRoutes.js");
 
-//app.use(routes);
+app.use(routes);
 
 // Connect to the Mongo DB
 mongoose.connect(MONGODB_URI, {
