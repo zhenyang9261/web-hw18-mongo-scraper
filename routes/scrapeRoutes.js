@@ -11,6 +11,7 @@ const db = require("../models");
 // Read all rows
 router.get("/", function(req, res) {
   db.Article.find({})
+    .lean()
     .then(function(dbArticle) {
       console.log(dbArticle);
       // If all articles are successfully found, send them back to the client
@@ -30,6 +31,7 @@ router.get("/scrape", function(req, res) {
     // Load html into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
     let result = {};
+    let articles = [];
 
     $(".FeedCard").each(function(i, element) {
       result.title = $(element)
@@ -49,6 +51,8 @@ router.get("/scrape", function(req, res) {
 
       // Create a new Article using the `result` object built from scraping
       if (result.title && result.body && result.link) {
+        articles.push(result);
+
         db.Article.create(result)
           .then(function(dbArticle) {
             // View the added result in the console
@@ -62,7 +66,7 @@ router.get("/scrape", function(req, res) {
     });
 
     // Send a message to the client
-    res.send("Scrape Complete");
+    res.render("index", { articles: articles });
   });
 });
 

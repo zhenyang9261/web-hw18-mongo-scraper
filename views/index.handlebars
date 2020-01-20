@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Saved Articles</a>
@@ -34,13 +34,13 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-12">
                 <div id="article">
                     {{#each articles}}
-                    <div data-id="{{id}}">
-                        <div class="article-img">{{imgLink}}</div>
-                        <div class="article-body">{{title}}</div>
-                        <button data-id="{{id}}" class="save-btn">Save Article</button>
+                    <div data-id={{_id}}>
+                        <div class="article-title">{{title}}</div>
+                        <div class="article-body">{{body}}</div>
+                        <button data-id={{_id}} class="save-btn">Save Article</button>
                     </div>
                     {{/each}}
                 </div>
