@@ -49,10 +49,12 @@ router.get("/scrape", function(req, res) {
   axios.get("https://apnews.com/").then(function(response) {
     // Load html into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
-    let result = {};
+
     let articles = [];
 
     $(".FeedCard").each(function(i, element) {
+      let result = {};
+
       result.title = $(element)
         .find("h1")
         .text();
@@ -70,23 +72,31 @@ router.get("/scrape", function(req, res) {
 
       // Create a new Article using the `result` object built from scraping
       if (result.title && result.body && result.link) {
+        result.id = i;
         articles.push(result);
-
-        db.Article.create(result)
-          .then(function(dbArticle) {
-            // View the added result in the console
-            console.log(dbArticle);
-          })
-          .catch(function(err) {
-            // If an error occurred, log it
-            console.log(err);
-          });
       }
     });
-
+    //console.log(articles);
     // Send a message to the client
     res.render("index", { articles: articles });
   });
+});
+
+// Route to add new article to db.
+router.post("/api/article", function(req, res) {
+  // Grab the data from request body
+  let article = req.body;
+  console.log(article);
+
+  db.Article.create(article)
+    .then(function(dbArticle) {
+      // View the added result in the console
+      console.log(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, log it
+      console.log(err);
+    });
 });
 
 // Export routes for server.js to use.

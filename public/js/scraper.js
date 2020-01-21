@@ -33,3 +33,27 @@ $(document).on("click", "#note", function() {
       }
     });
 });
+
+// When Save Article button is clicked
+$(document).on("click", "#save-article", function() {
+  // Save the id
+  let thisId = $(this).attr("data-id");
+  let title = $(`#article-title-${thisId}`).text();
+  let body = $(`#article-body-${thisId}`).text();
+  let link = $(`#article-link-${thisId}`).attr("href");
+
+  // Compose the object to send with POST request
+  let article = {
+    title: title,
+    body: body,
+    link: link
+  };
+  console.log("Save article: " + article);
+
+  // Ajex call to save the article
+  $.ajax({
+    method: "POST",
+    url: "api/article/",
+    data: article
+  }).then(function() {});
+});
