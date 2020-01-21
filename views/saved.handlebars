@@ -15,10 +15,7 @@
                     <a class="nav-link" href="/saved">Saved Articles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/scrape">Scrape New Articles</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Clear Articles</a>
+                    <a class="nav-link" href="/clear">Clear Articles</a>
                 </li>
             </ul>
 
@@ -37,11 +34,12 @@
             <div class="col-12">
                 <div id="article">
                     {{#each articles}}
-                    <div data-id={{id}}>
-                        <a href="{{link}}" target="_blank" class="article-link" id="article-link-{{id}}"><span
-                                class="article-title" id="article-title-{{id}}">{{title}}</span></a>
-                        <div class="article-body" id="article-body-{{id}}">{{body}}</div>
-                        <button data-id={{id}} id="save-article">Save Article</button>
+                    <div data-id={{_id}}>
+                        <a href="{{link}}" target="_blank" class="article-link" id="article-link-{{_id}}"><span
+                                class="article-title" id="article-title-{{_id}}">{{title}}</span></a>
+                        <div class="article-body" id="article-body-{{_id}}">{{body}}</div>
+                        <button data-id={{_id}} id="delete-article">Delete from Saved Article</button>
+                        <button data-id={{_id}} id="notes">Create Notes</button>
                     </div>
                     {{/each}}
                 </div>

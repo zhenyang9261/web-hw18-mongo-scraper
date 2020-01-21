@@ -21,7 +21,7 @@ router.get("/saved", function(req, res) {
     .then(function(dbArticle) {
       //console.log(dbArticle);
       // If all articles are successfully found, send them back to the client
-      res.render("index", { articles: dbArticle });
+      res.render("saved", { articles: dbArticle });
     })
     .catch(function(err) {
       // If an error occurs, send the error back to the client
@@ -86,7 +86,7 @@ router.get("/scrape", function(req, res) {
 router.post("/api/article", function(req, res) {
   // Grab the data from request body
   let article = req.body;
-  console.log(article);
+  //console.log(article);
 
   db.Article.create(article)
     .then(function(dbArticle) {
@@ -96,6 +96,22 @@ router.post("/api/article", function(req, res) {
     .catch(function(err) {
       // If an error occurred, log it
       console.log(err);
+    });
+});
+
+// Route to delete an article from save articles
+router.delete("/api/article/:id", function(req, res) {
+  // Grab the data from request body
+  let id = req.params.id;
+  console.log("Deleted id: " + id);
+
+  db.Article.remove({ _id: id })
+    .then(function(dbArticle) {
+      res.status(200).end();
+    })
+    .catch(function(err) {
+      // If an error occurs, send the error back to the client
+      res.json(err);
     });
 });
 

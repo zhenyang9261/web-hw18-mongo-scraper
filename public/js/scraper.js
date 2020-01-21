@@ -34,6 +34,19 @@ $(document).on("click", "#note", function() {
     });
 });
 
+// When Delete Article button is clicked
+$(document).on("click", "#delete-article", function() {
+  // Save the id
+  let thisId = $(this).attr("data-id");
+  $.ajax("/api/article/" + thisId, {
+    type: "DELETE"
+  }).then(function() {
+    // Reload the page to get the updated list
+    console.log("reload");
+    location.reload();
+  });
+});
+
 // When Save Article button is clicked
 $(document).on("click", "#save-article", function() {
   // Save the id
@@ -48,7 +61,6 @@ $(document).on("click", "#save-article", function() {
     body: body,
     link: link
   };
-  console.log("Save article: " + article);
 
   // Ajex call to save the article
   $.ajax({
