@@ -8,12 +8,18 @@ const router = express.Router();
 const db = require("../models");
 
 // Create all our routes and set up logic within those routes where required.
-// Read all rows
+
+// Route to home page. Render index page
 router.get("/", function(req, res) {
+  res.render("index");
+});
+
+// Route to get all saved articles from db
+router.get("/saved", function(req, res) {
   db.Article.find({})
     .lean()
     .then(function(dbArticle) {
-      console.log(dbArticle);
+      //console.log(dbArticle);
       // If all articles are successfully found, send them back to the client
       res.render("index", { articles: dbArticle });
     })
@@ -23,7 +29,20 @@ router.get("/", function(req, res) {
     });
 });
 
-// A GET route for scraping the National Geographic website
+// Route to clear all saved articles from db
+router.get("/clear", function(req, res) {
+  db.Article.remove({})
+    .then(function(dbArticle) {
+      // Display home page
+      res.render("index");
+    })
+    .catch(function(err) {
+      // If an error occurs, send the error back to the client
+      res.json(err);
+    });
+});
+
+// Route to scrape new articles from apnews.
 router.get("/scrape", function(req, res) {
   // Grab the body of the html with axios
 
