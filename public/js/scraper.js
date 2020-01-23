@@ -32,19 +32,6 @@ $(document).on("click", "#note", function() {
         }
       }
 
-      // let textarea = $("<textarea>");
-      // textarea.attr("class", "form-control");
-      // textarea.attr("id", "new-note");
-      // textarea.attr("rows", 3);
-      // textarea.attr("data-id", data._id);
-      // $(".modal-input").append(textarea);
-
-      // let saveButton = $("<button>");
-      // saveButton.text("Save Note");
-      // saveButton.attr("class", "btn btn-primary");
-      // saveButton.attr("id", "save-note");
-      // saveButton.attr("data-id", data._id);
-      // $(".modal-footer").append(saveButton);
       $("#save-note").attr("data-id", data._id);
 
       $("#note-modal").modal("show");
@@ -55,13 +42,11 @@ $(document).on("click", "#note", function() {
 $(document).on("click", "#save-note", function() {
   // Save the id
   let thisId = $(this).attr("data-id");
-  console.log("save note id: " + thisId);
 
   let body = $("#new-note").val();
   if (body) {
     body = body.trim();
   }
-  console.log("note body: " + body);
 
   //Now make an ajax call for the article note
   $.ajax({
@@ -71,8 +56,24 @@ $(document).on("click", "#save-note", function() {
   })
     // With that done, add the note information to the page
     .then(function(data) {
-      console.log("create new note callback obj " + data);
       $("#note-modal").modal("hide");
+    });
+});
+
+// When Remove Note button is clicked
+$(document).on("click", "#remove-note", function() {
+  // Save the id
+  let thisId = $(this).attr("data-id");
+  console.log("remove note id: " + thisId);
+
+  //Now make an ajax call for the article note
+  $.ajax({
+    method: "DELETE",
+    url: "/api/note/" + thisId
+  })
+    // With that done, add the note information to the page
+    .then(function() {
+      location.reload();
     });
 });
 
@@ -84,7 +85,7 @@ $(document).on("click", "#delete-article", function() {
     type: "DELETE"
   }).then(function() {
     // Reload the page to get the updated list
-    console.log("reload");
+
     location.reload();
   });
 });

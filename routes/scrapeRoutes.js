@@ -128,6 +128,23 @@ router.post("/api/note/:id", function(req, res) {
     });
 });
 
+// Route to delete a note =========================================
+router.delete("/api/note/:id", function(req, res) {
+  // Grab the data from request body
+  let id = req.params.id;
+  console.log("Deleted id: " + id);
+
+  db.Note.remove({ _id: id })
+    .then(function(dbNote) {
+      console.log("Note deleted. Callback dbNote: " + dbNote);
+      res.status(200).end();
+    })
+    .catch(function(err) {
+      // If an error occurs, send the error back to the client
+      res.json(err);
+    });
+});
+
 // Route to add new article to db. ================================
 router.post("/api/article", function(req, res) {
   // Grab the data from request body
