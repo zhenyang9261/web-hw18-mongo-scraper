@@ -12,22 +12,67 @@ $(document).on("click", "#note", function() {
     .then(function(data) {
       $("#note-label").text(`Note for article ${data._id}`);
 
+      $(".modal-notes").empty();
+      $(".modal-input").val("");
+
       // If there's a note in the article
       if (data.note) {
-        $("#modal-note").val(data.note.body);
+        for (let i = 0; i < data.note.length; i++) {
+          let noteDiv = $("<div>");
+          let note = $("<span>");
+          note.text(data.note[i].body);
+          let closeButton = $("<button>");
+          closeButton.text("x");
+          closeButton.attr("class", "remove");
+          closeButton.attr("id", "remove-note");
+          closeButton.attr("data-id", data.note[i]._id);
+          noteDiv.append(note);
+          noteDiv.append(closeButton);
+          $(".modal-notes").append(noteDiv);
+        }
       }
 
+      // let textarea = $("<textarea>");
+      // textarea.attr("class", "form-control");
+      // textarea.attr("id", "new-note");
+      // textarea.attr("rows", 3);
+      // textarea.attr("data-id", data._id);
+      // $(".modal-input").append(textarea);
+
+      // let saveButton = $("<button>");
+      // saveButton.text("Save Note");
+      // saveButton.attr("class", "btn btn-primary");
+      // saveButton.attr("id", "save-note");
+      // saveButton.attr("data-id", data._id);
+      // $(".modal-footer").append(saveButton);
+      $("#save-note").attr("data-id", data._id);
+
       $("#note-modal").modal("show");
-      // The title of the article
-      // $("#notes").append("<h2>" + data.title + "</h2>");
-      // // An input to enter a new title
-      // $("#notes").append("<input id='titleinput' name='title' >");
-      // // A textarea to add a new note body
-      // $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-      // // A button to submit a new note, with the id of the article saved to it
-      // $("#notes").append(
-      //   "<button data-id='" + data._id + "' id='savenote'>Save Note</button>"
-      // );
+    });
+});
+
+// When Save Note button is clicked
+$(document).on("click", "#save-note", function() {
+  // Save the id
+  let thisId = $(this).attr("data-id");
+  console.log("save note id: " + thisId);
+
+  let body = $("#new-note").val();
+  if (body) {
+    body = body.trim();
+  }
+  console.log("note body: " + body);
+
+  //Now make an ajax call for the article note
+  $.ajax({
+    method: "POST",
+    url: "/api/note/" + thisId,
+    data: { body: body }
+  })
+    // With that done, add the note information to the page
+    .then(function(data) {
+      console.log("create new note callback obj " + data);
+      $("#note-modal").modal("hide");
     });
 });
 

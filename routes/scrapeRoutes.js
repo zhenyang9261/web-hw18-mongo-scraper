@@ -93,7 +93,7 @@ router.get("/api/note/:id", function(req, res) {
     .populate("note")
     .then(function(dbNote) {
       // If any notes are found, send them to the client with any associated article
-      console.log(dbNote);
+      //console.log(dbNote);
       res.json(dbNote);
     })
     .catch(function(err) {
@@ -102,11 +102,11 @@ router.get("/api/note/:id", function(req, res) {
     });
 });
 
-// Route to save an Article's associated Note
+// Route to save an Article's associated Note ===================================
 router.post("/api/note/:id", function(req, res) {
   let id = req.params.id;
   console.log("article id: " + id);
-  console.log(req.body);
+  console.log("request body: " + req.body.body);
 
   db.Note.create(req.body)
     .then(function(dbNote) {
