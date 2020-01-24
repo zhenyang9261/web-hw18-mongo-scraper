@@ -23,8 +23,8 @@
 }
 
 .header-img {
-  opacity: 0.9;
-  filter: brightness(70%);
+  opacity: 0.8;
+  filter: brightness(60%);
 }
 
 .img-text {
@@ -49,4 +49,27 @@
   background-color: navy;
   color: white;
   margin-left: 2rem;
+}
+
+.article {
+  margin: 0.5rem 0;
+  background-color: #eaeae1;
+  font-size: 1.5rem;
+}
+
+.article-title {
+  margin: 0.5rem 0;
+  color: #ff471a;
+  font-weight: bold;
+}
+
+.article-body {
+  margin: 0.5rem 0;
+  color: navy;
+}
+
+.article-btn {
+  padding: 0.5rem 1rem;
+  background-color: navy;
+  color: white;
 }
