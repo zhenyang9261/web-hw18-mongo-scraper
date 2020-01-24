@@ -13,7 +13,7 @@ $(document).on("click", "#note", function() {
       $("#note-label").text(`Note for article ${data._id}`);
 
       $(".modal-notes").empty();
-      $(".modal-input").val("");
+      $("#new-note").val("");
 
       // If there's a note in the article
       if (data.note) {

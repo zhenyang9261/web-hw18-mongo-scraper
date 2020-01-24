@@ -136,7 +136,7 @@ router.delete("/api/note/:id", function(req, res) {
 
   db.Note.remove({ _id: id })
     .then(function(dbNote) {
-      console.log("Note deleted. Callback dbNote: " + dbNote);
+      console.log("Note deleted. Callback dbNote: " + JSON.stringify(dbNote));
       res.status(200).end();
     })
     .catch(function(err) {
