@@ -64,7 +64,6 @@ $(document).on("click", "#save-note", function() {
 $(document).on("click", "#remove-note", function() {
   // Save the id
   let thisId = $(this).attr("data-id");
-  console.log("remove note id: " + thisId);
 
   //Now make an ajax call for the article note
   $.ajax({
@@ -85,7 +84,6 @@ $(document).on("click", "#delete-article", function() {
     type: "DELETE"
   }).then(function() {
     // Reload the page to get the updated list
-
     location.reload();
   });
 });

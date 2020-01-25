@@ -105,15 +105,12 @@ router.get("/api/note/:id", function(req, res) {
 // Route to save an Article's associated Note ===================================
 router.post("/api/note/:id", function(req, res) {
   let id = req.params.id;
-  console.log("article id: " + id);
-  console.log("request body: " + req.body.body);
 
   db.Note.create(req.body)
     .then(function(dbNote) {
       // If a Note was created successfully, find the article and push the new Note's _id to the article's `notes` array
       return db.Article.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(id) },
-        //{ note: dbNote._id }
         { $push: { note: dbNote._id } },
         { new: true }
       );
@@ -132,11 +129,9 @@ router.post("/api/note/:id", function(req, res) {
 router.delete("/api/note/:id", function(req, res) {
   // Grab the data from request body
   let id = req.params.id;
-  console.log("Deleted id: " + id);
 
   db.Note.remove({ _id: id })
     .then(function(dbNote) {
-      console.log("Note deleted. Callback dbNote: " + JSON.stringify(dbNote));
       res.status(200).end();
     })
     .catch(function(err) {
@@ -149,12 +144,13 @@ router.delete("/api/note/:id", function(req, res) {
 router.post("/api/article", function(req, res) {
   // Grab the data from request body
   let article = req.body;
-  //console.log(article);
 
   db.Article.create(article)
     .then(function(dbArticle) {
       // View the added result in the console
       console.log(dbArticle);
+
+      res.status(200).end();
     })
     .catch(function(err) {
       // If an error occurred, log it
@@ -166,7 +162,6 @@ router.post("/api/article", function(req, res) {
 router.delete("/api/article/:id", function(req, res) {
   // Grab the data from request body
   let id = req.params.id;
-  console.log("Deleted id: " + id);
 
   db.Article.remove({ _id: id })
     .then(function(dbArticle) {
