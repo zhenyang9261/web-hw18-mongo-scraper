@@ -1,0 +1,84 @@
+<div class="container-fluid scraper-container">
+
+    <nav class="navbar navbar-expand-lg navbar-light menu-bar" style="background-color: #e3f2fd;">
+        <a class="navbar-brand title" href="#">Mongo Scraper</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active menu-item">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="/saved">Saved Articles</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="/clear">Clear Articles</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="main-section">
+
+        <div class="row">
+            <div class="col-12 img-container">
+                <img src="images/header_scraper.jpg" class='header-img' width="100%" alt="header image">
+                <div class="img-text">
+                    <p class="img-text-title">Mongo Scraper</p>
+                    <p class="img-text-subtitle">AP News</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div id="article">
+                    {{#each articles}}
+                    <div data-id={{_id}} class="article">
+                        <a href="{{link}}" target="_blank" class="article-link" id="article-link-{{_id}}"><span
+                                class="article-title" id="article-title-{{_id}}">{{title}}</span></a>
+                        <div class="article-body" id="article-body-{{_id}}">{{body}}</div>
+                        <button data-id={{_id}} id="delete-article" class="btn btn-danger article-btn">Delete from Saved
+                            Article</button>
+                        <button data-id={{_id}} id="note" type="button" class="btn btn-success article-btn">Create
+                            Notes</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="note-modal" tabindex="-1" role="dialog"
+                            aria-labelledby="noteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="note-label"></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-notes">
+                                    </div>
+                                    <div class="modal-input">
+                                        <textarea class="form-control" id="new-note" rows="3"></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="save-note">Save Note</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
