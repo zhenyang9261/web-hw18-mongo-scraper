@@ -73,6 +73,9 @@ router.get("/scrape", function(req, res) {
 
       // Create a new Article using the `result` object built from scraping
       if (result.title && result.body && result.link) {
+        result.title = result.title.trim();
+        result.body = result.body.trim();
+        result.link = result.link.trim();
         result.id = i;
         articles.push(result);
       }
@@ -144,13 +147,24 @@ router.post("/api/article", function(req, res) {
   // Grab the data from request body
   let article = req.body;
 
-  db.Article.create(article)
+  // Check first whether this article is in saved article collection already
+  db.Article.find({ title: article.title })
     .then(function(dbArticle) {
-      res.status(200).end();
+      // Save this article only if it is not in the collection already
+      if (dbArticle.length == 0) {
+        db.Article.create(article)
+          .then(function(dbArticle) {
+            res.status(200).end();
+          })
+          .catch(function(err) {
+            // If an error occurred, log it
+            console.log(err);
+          });
+      }
     })
     .catch(function(err) {
-      // If an error occurred, log it
-      console.log(err);
+      // If an error occurs, send the error back to the client
+      res.json(err);
     });
 });
 
