@@ -46,14 +46,14 @@ router.get("/clear", function(req, res) {
 router.get("/scrape", function(req, res) {
   // Grab the body of the html with axios
 
-  var url = "https://apnews.com/";
+  var url = "https://apnews.com";
   axios.get(url).then(function(response) {
     // Load html into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
     let articles = [];
 
-    $(".FeedCard").each(function(i, element) {
+    $("div.FeedCard").each(function(i, element) {
       let result = {};
 
       result.title = $(element)
