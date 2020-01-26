@@ -18,9 +18,8 @@ router.get("/", function(req, res) {
 // Route to get all saved articles from db ======================
 router.get("/saved", function(req, res) {
   db.Article.find({})
-    .lean()
+    .lean() // to fix error encountered: Handlebars: Access has been denied to resolve the property "_id" because it is not an "own property" of its parent.
     .then(function(dbArticle) {
-      //console.log(dbArticle);
       // If all articles are successfully found, send them back to the client
       res.render("saved", { articles: dbArticle });
     })
@@ -47,13 +46,14 @@ router.get("/clear", function(req, res) {
 router.get("/scrape", function(req, res) {
   // Grab the body of the html with axios
 
-  axios.get("https://apnews.com/").then(function(response) {
+  var url = "https://apnews.com";
+  axios.get(url).then(function(response) {
     // Load html into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
     let articles = [];
 
-    $(".FeedCard").each(function(i, element) {
+    $("div.FeedCard").each(function(i, element) {
       let result = {};
 
       result.title = $(element)
@@ -65,7 +65,7 @@ router.get("/scrape", function(req, res) {
         .text();
 
       result.link =
-        "https://apnews.com" +
+        url +
         $(element)
           .children("a")
           .eq(1)
@@ -73,6 +73,9 @@ router.get("/scrape", function(req, res) {
 
       // Create a new Article using the `result` object built from scraping
       if (result.title && result.body && result.link) {
+        result.title = result.title.trim();
+        result.body = result.body.trim();
+        result.link = result.link.trim();
         result.id = i;
         articles.push(result);
       }
@@ -93,7 +96,7 @@ router.get("/api/note/:id", function(req, res) {
     .populate("note")
     .then(function(dbNote) {
       // If any notes are found, send them to the client with any associated article
-      //console.log(dbNote);
+
       res.json(dbNote);
     })
     .catch(function(err) {
@@ -116,8 +119,7 @@ router.post("/api/note/:id", function(req, res) {
       );
     })
     .then(function(dbArticle) {
-      // If the article was updated successfully, send it back to the client
-      res.json(dbArticle);
+      res.status(200).end();
     })
     .catch(function(err) {
       // If an error occurs, send it back to the client
@@ -145,16 +147,24 @@ router.post("/api/article", function(req, res) {
   // Grab the data from request body
   let article = req.body;
 
-  db.Article.create(article)
+  // Check first whether this article is in saved article collection already
+  db.Article.find({ title: article.title })
     .then(function(dbArticle) {
-      // View the added result in the console
-      console.log(dbArticle);
-
-      res.status(200).end();
+      // Save this article only if it is not in the collection already
+      if (dbArticle.length == 0) {
+        db.Article.create(article)
+          .then(function(dbArticle) {
+            res.status(200).end();
+          })
+          .catch(function(err) {
+            // If an error occurred, log it
+            console.log(err);
+          });
+      }
     })
     .catch(function(err) {
-      // If an error occurred, log it
-      console.log(err);
+      // If an error occurs, send the error back to the client
+      res.json(err);
     });
 });
 

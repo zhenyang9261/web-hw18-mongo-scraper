@@ -1,4 +1,7 @@
 /* Style Sheet */
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 
 .menu-bar {
   margin: 0;
@@ -35,18 +38,18 @@
 }
 
 .img-text-title {
-  font-size: 3rem;
+  font-size: 3.5vw;
   color: white;
   font-weight: bold;
 }
 
 .img-text-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.8vw;
   color: white;
 }
 
 #remove-note {
-  background-color: navy;
+  background-color: #0275d8;
   color: white;
   margin-left: 2rem;
 }
@@ -66,7 +69,7 @@
 
 .article-body {
   margin: 0.5rem 0;
-  color: navy;
+  color: #0275d8;
 }
 
 .article-btn {
