@@ -27,6 +27,8 @@ This is a Node app that scrapes news articles from AP News and allows users to s
 
 ## Demo
 
+![](demo/mongo_scraper.gif)
+
 ## Heroku Deployment
 
 https://mongo-scraper-apnews.herokuapp.com/
