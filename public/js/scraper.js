@@ -8,14 +8,14 @@ $(document).on("click", "#note", function() {
     method: "GET",
     url: "/api/note/" + thisId
   })
-    // With that done, add the note information to the page
+    // With that done, add the note information to the modal
     .then(function(data) {
       $("#note-label").text(`Note for article ${data._id}`);
 
       $(".modal-notes").empty();
       $("#new-note").val("");
 
-      // If there's a note in the article
+      // If there are notes in the article
       if (data.note) {
         for (let i = 0; i < data.note.length; i++) {
           let noteDiv = $("<div>");
@@ -103,7 +103,7 @@ $(document).on("click", "#save-article", function() {
     link: link
   };
 
-  // Ajex call to save the article
+  // Ajax call to save the article
   $.ajax({
     method: "POST",
     url: "api/article/",

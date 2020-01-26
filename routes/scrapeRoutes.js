@@ -18,9 +18,8 @@ router.get("/", function(req, res) {
 // Route to get all saved articles from db ======================
 router.get("/saved", function(req, res) {
   db.Article.find({})
-    .lean()
+    .lean() // to fix error encountered: Handlebars: Access has been denied to resolve the property "_id" because it is not an "own property" of its parent.
     .then(function(dbArticle) {
-      //console.log(dbArticle);
       // If all articles are successfully found, send them back to the client
       res.render("saved", { articles: dbArticle });
     })
@@ -47,7 +46,8 @@ router.get("/clear", function(req, res) {
 router.get("/scrape", function(req, res) {
   // Grab the body of the html with axios
 
-  axios.get("https://apnews.com/").then(function(response) {
+  var url = "https://apnews.com/";
+  axios.get(url).then(function(response) {
     // Load html into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
@@ -65,7 +65,7 @@ router.get("/scrape", function(req, res) {
         .text();
 
       result.link =
-        "https://apnews.com" +
+        url +
         $(element)
           .children("a")
           .eq(1)
@@ -93,7 +93,7 @@ router.get("/api/note/:id", function(req, res) {
     .populate("note")
     .then(function(dbNote) {
       // If any notes are found, send them to the client with any associated article
-      //console.log(dbNote);
+
       res.json(dbNote);
     })
     .catch(function(err) {
@@ -116,8 +116,7 @@ router.post("/api/note/:id", function(req, res) {
       );
     })
     .then(function(dbArticle) {
-      // If the article was updated successfully, send it back to the client
-      res.json(dbArticle);
+      res.status(200).end();
     })
     .catch(function(err) {
       // If an error occurs, send it back to the client
@@ -147,9 +146,6 @@ router.post("/api/article", function(req, res) {
 
   db.Article.create(article)
     .then(function(dbArticle) {
-      // View the added result in the console
-      console.log(dbArticle);
-
       res.status(200).end();
     })
     .catch(function(err) {
